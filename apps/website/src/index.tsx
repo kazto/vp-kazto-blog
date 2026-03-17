@@ -301,6 +301,11 @@ const CSS = `
   .comment-links a:hover {
     text-decoration: underline;
   }
+
+  .copyright {
+    font-size: 0.875rem;
+    color: #64748b;
+  }
 `;
 
 function renderPage(title: string, currentSlug: string | null, bodyContent: string): string {
@@ -314,6 +319,25 @@ function renderPage(title: string, currentSlug: string | null, bodyContent: stri
     )
     .join("");
 
+  const makePostLink = (currentSlug: string | null) => {
+    if (currentSlug) {
+      const url = `${BASE_URL}/posts/${currentSlug}`;
+      const bskyId = "@kazto.dev";
+      const xcomId = "@kazto_dev";
+      const bskyText = encodeURIComponent(`${url}\n${bskyId}\n`);
+      const xcomText = encodeURIComponent(`${url}\n${xcomId}\n`);
+      const bskyUrl = `https://bsky.app/intent/compose?text=${bskyText}`;
+      const xcomUrl = `https://x.com/intent/post?text=${xcomText}`;
+      return (
+        `<div class="comment-links">comment on` +
+        ` <a href="${bskyUrl}" target="_blank" rel="noopener">bluesky</a> /` +
+        ` <a href="${xcomUrl}" target="_blank" rel="noopener">x.com</a></div>`
+      );
+    }
+    return "";
+  };
+  const postLink = makePostLink(currentSlug);
+
   return `<!DOCTYPE html>
 <html lang="ja">
 <head>
@@ -325,7 +349,7 @@ function renderPage(title: string, currentSlug: string | null, bodyContent: stri
 <body>
   <aside class="sidebar" id="sidebar">
     <div class="site-title">
-      <a href="/">kazto blog</a>
+      <a href="/">${BLOG_TITLE}</a>
       <button class="menu-toggle" id="menu-toggle" aria-label="メニューを開く">&#9776;</button>
     </div>
     <ul class="post-list">${sidebarItems}
@@ -338,35 +362,28 @@ function renderPage(title: string, currentSlug: string | null, bodyContent: stri
   </script>
   <div class="content-wrapper">
     ${bodyContent}
-    ${
-      currentSlug
-        ? (() => {
-            const url = `${BASE_URL}/posts/${currentSlug}`;
-            const bskyUrl = `https://bsky.app/intent/compose?text=${encodeURIComponent(url)}`;
-            const xUrl = `https://x.com/intent/tweet?text=${encodeURIComponent(url)}`;
-            return `<div class="comment-links">comment on <a href="${bskyUrl}" target="_blank" rel="noopener">bluesky</a> / <a href="${xUrl}" target="_blank" rel="noopener">X</a></div>`;
-          })()
-        : ""
-    }
+    ${postLink}
+    <div class="copyright">© kazto_dev</div>
   </div>
 </body>
 </html>`;
 }
 
 const BASE_URL = "https://blog.kazto.dev";
+const BLOG_TITLE = "kazto_dev blog";
 
 const app = new Hono();
 
 app.get("/", (c) => {
   const latest = posts[0];
-  if (!latest) return c.html(renderPage("kazto blog", null, "<p>記事がありません。</p>"));
+  if (!latest) return c.html(renderPage(BLOG_TITLE, null, "<p>記事がありません。</p>"));
   const body = `
     <div class="post-header">
       <h1>${latest.title}</h1>
       <time datetime="${latest.date}">${latest.date}</time>
     </div>
     <article>${latest.html}</article>`;
-  return c.html(renderPage(`${latest.title} | kazto blog`, latest.slug, body));
+  return c.html(renderPage(`${latest.title} | ${BLOG_TITLE}`, latest.slug, body));
 });
 
 app.get("/posts/:slug", ssgParams(posts.map((p) => ({ slug: p.slug }))), (c) => {
@@ -379,7 +396,7 @@ app.get("/posts/:slug", ssgParams(posts.map((p) => ({ slug: p.slug }))), (c) => 
       <time datetime="${post.date}">${post.date}</time>
     </div>
     <article>${post.html}</article>`;
-  return c.html(renderPage(`${post.title} | kazto blog`, post.slug, body));
+  return c.html(renderPage(`${post.title} | ${BLOG_TITLE}`, post.slug, body));
 });
 
 export default app;
