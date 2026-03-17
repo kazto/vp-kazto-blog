@@ -1,0 +1,18 @@
+name = "kazto-blog"
+compatibility_date = "2025-01-01"
+
+[assets]
+directory = "./apps/website/dist"
+
+[[kv_namespaces]]
+binding = "KV"
+id = "15f6028a761e46088200f4e20f04515b"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "kazto-blog"
+database_id = "57879d86-1e9e-4b1b-a554-477255c5cb72"
+
+[[r2_buckets]]
+binding = "BUCKET"
+bucket_name = "kazto-blog"

@@ -1,0 +1,291 @@
+import { Hono } from "hono";
+import { ssgParams } from "hono/ssg";
+import { marked } from "marked";
+
+const postFiles = import.meta.glob("../../../posts/*.md", {
+  query: "?raw",
+  import: "default",
+  eager: true,
+}) as Record<string, string>;
+
+interface Post {
+  slug: string;
+  title: string;
+  date: string;
+  html: string;
+}
+
+function parseFrontmatter(raw: string): {
+  data: Record<string, string>;
+  content: string;
+} {
+  const match = /^---\r?\n([\s\S]*?)\r?\n---\r?\n([\s\S]*)$/.exec(raw);
+  if (!match) return { data: {}, content: raw };
+  const yamlBlock = match[1];
+  const content = match[2];
+  const data: Record<string, string> = {};
+  for (const line of yamlBlock.split("\n")) {
+    const colonIdx = line.indexOf(":");
+    if (colonIdx === -1) continue;
+    const key = line.slice(0, colonIdx).trim();
+    const value = line
+      .slice(colonIdx + 1)
+      .trim()
+      .replace(/^["']|["']$/g, "");
+    data[key] = value;
+  }
+  return { data, content };
+}
+
+const posts: Post[] = Object.entries(postFiles)
+  .map(([filePath, raw]) => {
+    const slug = filePath.split("/").pop()!.replace(".md", "");
+    const { data, content } = parseFrontmatter(raw);
+    return {
+      slug,
+      title: data.title ?? slug,
+      date: data.date ?? "",
+      html: marked.parse(content, { async: false }),
+    };
+  })
+  .sort((a, b) => b.date.localeCompare(a.date));
+
+const CSS = `
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+    display: flex;
+    min-height: 100vh;
+    background: #f8fafc;
+    color: #1e293b;
+  }
+
+  /* Sidebar */
+  .sidebar {
+    width: 300px;
+    min-width: 300px;
+    background: #0f172a;
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    overflow-y: auto;
+  }
+
+  .sidebar::-webkit-scrollbar { width: 4px; }
+  .sidebar::-webkit-scrollbar-track { background: transparent; }
+  .sidebar::-webkit-scrollbar-thumb { background: #334155; border-radius: 2px; }
+
+  .site-title {
+    padding: 28px 24px 20px;
+    border-bottom: 1px solid #1e293b;
+  }
+
+  .site-title a {
+    color: #f1f5f9;
+    text-decoration: none;
+    font-size: 1.25rem;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+  }
+
+  .post-list {
+    list-style: none;
+    padding: 8px 0 24px;
+  }
+
+  .post-list li { display: flex; flex-direction: column; }
+
+  .post-list li a {
+    padding: 8px 24px 2px;
+    color: #94a3b8;
+    text-decoration: none;
+    font-size: 0.8125rem;
+    line-height: 1.5;
+    transition: color 0.15s;
+  }
+
+  .post-list li a:hover { color: #e2e8f0; }
+
+  .post-list li time {
+    padding: 0 24px 6px;
+    font-size: 0.6875rem;
+    color: #475569;
+  }
+
+  .post-list li.active a {
+    color: #38bdf8;
+    font-weight: 600;
+  }
+
+  .post-list li.active time { color: #7dd3fc; }
+
+  /* Content area */
+  .content-wrapper {
+    margin-left: 300px;
+    flex: 1;
+    padding: 56px 64px;
+    max-width: calc(300px + 860px);
+    width: 100%;
+  }
+
+  .post-header { margin-bottom: 40px; }
+
+  .post-header h1 {
+    font-size: 2rem;
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    color: #0f172a;
+    line-height: 1.3;
+    margin-bottom: 10px;
+  }
+
+  .post-header time {
+    font-size: 0.875rem;
+    color: #64748b;
+  }
+
+  article {
+    font-size: 1rem;
+    line-height: 1.85;
+    color: #334155;
+  }
+
+  article p { margin-bottom: 1.25em; }
+
+  article h2 {
+    font-size: 1.375rem;
+    font-weight: 700;
+    color: #0f172a;
+    margin: 2em 0 0.75em;
+    letter-spacing: -0.02em;
+  }
+
+  article h3 {
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: #1e293b;
+    margin: 1.5em 0 0.5em;
+  }
+
+  article ul, article ol {
+    padding-left: 1.75em;
+    margin-bottom: 1.25em;
+  }
+
+  article li { margin-bottom: 0.4em; }
+
+  article a { color: #0ea5e9; text-decoration: none; }
+  article a:hover { text-decoration: underline; }
+
+  article img {
+    max-width: 95%;
+    height: auto;
+    display: block;
+    margin: 1.5em 0;
+    border-radius: 8px;
+  }
+
+  article pre {
+    background: #f1f5f9;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    padding: 20px;
+    overflow-x: auto;
+    margin-bottom: 1.25em;
+    font-size: 0.875em;
+  }
+
+  article code {
+    font-family: 'Fira Code', 'Cascadia Code', Consolas, monospace;
+    font-size: 0.875em;
+    background: #f1f5f9;
+    border: 1px solid #e2e8f0;
+    border-radius: 4px;
+    padding: 0.1em 0.4em;
+  }
+
+  article pre code {
+    background: none;
+    border: none;
+    padding: 0;
+  }
+
+  article blockquote {
+    border-left: 3px solid #38bdf8;
+    padding: 4px 0 4px 20px;
+    margin: 0 0 1.25em;
+    color: #64748b;
+    font-style: italic;
+  }
+
+  article hr {
+    border: none;
+    border-top: 1px solid #e2e8f0;
+    margin: 2em 0;
+  }
+`;
+
+function renderPage(title: string, currentSlug: string | null, bodyContent: string): string {
+  const sidebarItems = posts
+    .map(
+      (p) => `
+    <li class="${p.slug === currentSlug ? "active" : ""}">
+      <a href="/posts/${p.slug}">${p.title}</a>
+      <time>${p.date.slice(0, 10)}</time>
+    </li>`,
+    )
+    .join("");
+
+  return `<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>${title}</title>
+  <style>${CSS}</style>
+</head>
+<body>
+  <aside class="sidebar">
+    <div class="site-title"><a href="/">kazto blog</a></div>
+    <ul class="post-list">${sidebarItems}
+    </ul>
+  </aside>
+  <div class="content-wrapper">
+    ${bodyContent}
+  </div>
+</body>
+</html>`;
+}
+
+const app = new Hono();
+
+app.get("/", (c) => {
+  const latest = posts[0];
+  if (!latest) return c.html(renderPage("kazto blog", null, "<p>記事がありません。</p>"));
+  const body = `
+    <div class="post-header">
+      <h1>${latest.title}</h1>
+      <time datetime="${latest.date}">${latest.date}</time>
+    </div>
+    <article>${latest.html}</article>`;
+  return c.html(renderPage(`${latest.title} | kazto blog`, latest.slug, body));
+});
+
+app.get("/posts/:slug", ssgParams(posts.map((p) => ({ slug: p.slug }))), (c) => {
+  const slug = c.req.param("slug");
+  const post = posts.find((p) => p.slug === slug);
+  if (!post) return c.notFound();
+  const body = `
+    <div class="post-header">
+      <h1>${post.title}</h1>
+      <time datetime="${post.date}">${post.date}</time>
+    </div>
+    <article>${post.html}</article>`;
+  return c.html(renderPage(`${post.title} | kazto blog`, post.slug, body));
+});
+
+export default app;

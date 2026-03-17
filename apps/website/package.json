@@ -1,0 +1,21 @@
+{
+  "name": "website",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vp dev",
+    "build": "tsc && vp build --config vite.ssg.config.ts",
+    "preview": "vp preview"
+  },
+  "dependencies": {
+    "hono": "^4.7.7",
+    "marked": "^15.0.12"
+  },
+  "devDependencies": {
+    "@hono/vite-ssg": "^0.2.1",
+    "typescript": "~5.9.3",
+    "vite": "catalog:",
+    "vite-plus": "catalog:"
+  }
+}
