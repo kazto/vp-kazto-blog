@@ -6,9 +6,9 @@
   "scripts": {
     "ready": "vp fmt && vp lint && vp run test -r && vp run build -r",
     "dev": "vp run website#dev",
-    "deploy": "vp run website#build && vpx wrangler deploy",
+    "deploy": "vp run website#build && wrangler deploy",
     "prepare": "vp config",
-    "preview#website": "cd apps/website && vp preview"
+    "website#preview": "vp run website#preview"
   },
   "devDependencies": {
     "vite-plus": "catalog:"
