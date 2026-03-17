@@ -284,6 +284,23 @@ const CSS = `
     border-top: 1px solid #e2e8f0;
     margin: 2em 0;
   }
+
+  .comment-links {
+    margin-top: 3em;
+    padding-top: 1.5em;
+    border-top: 1px solid #e2e8f0;
+    font-size: 0.875rem;
+    color: #64748b;
+  }
+
+  .comment-links a {
+    color: #0ea5e9;
+    text-decoration: none;
+  }
+
+  .comment-links a:hover {
+    text-decoration: underline;
+  }
 `;
 
 function renderPage(title: string, currentSlug: string | null, bodyContent: string): string {
@@ -321,10 +338,22 @@ function renderPage(title: string, currentSlug: string | null, bodyContent: stri
   </script>
   <div class="content-wrapper">
     ${bodyContent}
+    ${
+      currentSlug
+        ? (() => {
+            const url = `${BASE_URL}/posts/${currentSlug}`;
+            const bskyUrl = `https://bsky.app/intent/compose?text=${encodeURIComponent(url)}`;
+            const xUrl = `https://x.com/intent/tweet?text=${encodeURIComponent(url)}`;
+            return `<div class="comment-links">comment on <a href="${bskyUrl}" target="_blank" rel="noopener">bluesky</a> / <a href="${xUrl}" target="_blank" rel="noopener">X</a></div>`;
+          })()
+        : ""
+    }
   </div>
 </body>
 </html>`;
 }
+
+const BASE_URL = "https://blog.kazto.dev";
 
 const app = new Hono();
 
