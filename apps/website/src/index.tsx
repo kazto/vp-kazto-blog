@@ -132,6 +132,63 @@ const CSS = `
     width: 100%;
   }
 
+  /* Hamburger button (hidden on desktop) */
+  .menu-toggle {
+    display: none;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 4px 8px;
+    color: #f1f5f9;
+    font-size: 1.5rem;
+    line-height: 1;
+  }
+
+  /* Responsive: mobile */
+  @media (max-width: 768px) {
+    body {
+      flex-direction: column;
+    }
+
+    .sidebar {
+      width: 100%;
+      min-width: unset;
+      height: auto;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .site-title {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 16px 20px;
+    }
+
+    .menu-toggle {
+      display: block;
+    }
+
+    .post-list {
+      display: none;
+      padding: 0 0 16px;
+    }
+
+    .sidebar.open .post-list {
+      display: block;
+    }
+
+    .content-wrapper {
+      margin-left: 0;
+      padding: 32px 20px;
+      max-width: 100%;
+    }
+
+    .post-header h1 {
+      font-size: 1.5rem;
+    }
+  }
+
   .post-header { margin-bottom: 40px; }
 
   .post-header h1 {
@@ -249,11 +306,19 @@ function renderPage(title: string, currentSlug: string | null, bodyContent: stri
   <style>${CSS}</style>
 </head>
 <body>
-  <aside class="sidebar">
-    <div class="site-title"><a href="/">kazto blog</a></div>
+  <aside class="sidebar" id="sidebar">
+    <div class="site-title">
+      <a href="/">kazto blog</a>
+      <button class="menu-toggle" id="menu-toggle" aria-label="メニューを開く">&#9776;</button>
+    </div>
     <ul class="post-list">${sidebarItems}
     </ul>
   </aside>
+  <script>
+    document.getElementById('menu-toggle').addEventListener('click', function() {
+      document.getElementById('sidebar').classList.toggle('open');
+    });
+  </script>
   <div class="content-wrapper">
     ${bodyContent}
   </div>
