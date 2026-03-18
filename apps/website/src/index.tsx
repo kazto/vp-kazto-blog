@@ -324,8 +324,8 @@ function renderPage(title: string, currentSlug: string | null, bodyContent: stri
       const url = `${BASE_URL}/posts/${currentSlug}`;
       const bskyId = "@kazto.dev";
       const xcomId = "@kazto_dev";
-      const bskyText = encodeURIComponent(`${url}\n${bskyId}\n`);
-      const xcomText = encodeURIComponent(`${url}\n${xcomId}\n`);
+      const bskyText = encodeURIComponent(`${title} / ${url}\n${bskyId}\n`);
+      const xcomText = encodeURIComponent(`${title} / ${url}\n${xcomId}\n`);
       const bskyUrl = `https://bsky.app/intent/compose?text=${bskyText}`;
       const xcomUrl = `https://x.com/intent/post?text=${xcomText}`;
       return (
