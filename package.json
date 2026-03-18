@@ -7,7 +7,7 @@
     "ready": "pnpm fmt && pnpm lint && pnpm run test -r && pnpm run build -r",
     "dev": "pnpm run website#dev",
     "deploy": "pnpm run website#build && pnpm dlx wrangler deploy",
-    "prepare": "pnpm config",
+    "prepare": "vp config",
     "website#preview": "pnpm run website#preview"
   },
   "devDependencies": {
