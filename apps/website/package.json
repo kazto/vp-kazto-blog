@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vp dev",
-    "build": "tsc && vp build --config vite.ssg.config.ts",
+    "build": "tsc && vp build --config vite.ssg.config.ts && mv dist/feed.xml.html dist/feed.xml && mv dist/atom.xml.html dist/atom.xml",
     "preview": "vp preview"
   },
   "dependencies": {
