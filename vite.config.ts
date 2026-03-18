@@ -5,7 +5,7 @@ export default defineConfig({
     ignorePatterns: [],
   },
   staged: {
-    "*": "vp check --fix",
+    "*.{ts,tsx,js,jsx,mjs,cjs,sh,md,json,toml}": "vp check --fix",
   },
   lint: { options: { typeAware: true, typeCheck: true } },
 });

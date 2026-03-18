@@ -365,7 +365,26 @@ const CSS = `
   }
 `;
 
-function renderPage(title: string, currentSlug: string | null, bodyContent: string): string {
+function extractFirstImage(html: string): string | undefined {
+  const match = /<img[^>]+src="([^"]+)"/.exec(html);
+  if (!match) return undefined;
+  const src = match[1];
+  if (src.startsWith("http")) return src;
+  if (src.startsWith("/")) return `${BASE_URL}${src}`;
+  return undefined;
+}
+
+function renderPage(
+  title: string,
+  currentSlug: string | null,
+  bodyContent: string,
+  meta?: { pageUrl?: string; postImage?: string },
+): string {
+  const pageUrl = meta?.pageUrl ?? BASE_URL;
+  const ogImage = meta?.postImage ?? `${BASE_URL}/ogp.png`;
+  const twitterImage = meta?.postImage ?? `${BASE_URL}/ogp2.png`;
+  const twitterCard = meta?.postImage ? "summary_large_image" : "summary";
+
   const sidebarItems = posts
     .map(
       (p) => `
@@ -401,6 +420,16 @@ function renderPage(title: string, currentSlug: string | null, bodyContent: stri
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>${title}</title>
+  <meta property="og:title" content="${title}">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="${pageUrl}">
+  <meta property="og:image" content="${ogImage}">
+  <meta property="og:site_name" content="${BLOG_TITLE}">
+  <meta property="og:locale" content="ja_JP">
+  <meta name="twitter:card" content="${twitterCard}">
+  <meta name="twitter:site" content="@kazto_dev">
+  <meta name="twitter:title" content="${title}">
+  <meta name="twitter:image" content="${twitterImage}">
   <style>${CSS}</style>
 </head>
 <body>
@@ -447,7 +476,12 @@ app.get("/", (c) => {
       ${renderTags(latest.tags)}
     </div>
     <article>${latest.html}</article>`;
-  return c.html(renderPage(`${latest.title} | ${BLOG_TITLE}`, latest.slug, body));
+  return c.html(
+    renderPage(`${latest.title} | ${BLOG_TITLE}`, latest.slug, body, {
+      pageUrl: BASE_URL,
+      postImage: extractFirstImage(latest.html),
+    }),
+  );
 });
 
 app.get("/posts/:slug", ssgParams(posts.map((p) => ({ slug: p.slug }))), (c) => {
@@ -461,7 +495,12 @@ app.get("/posts/:slug", ssgParams(posts.map((p) => ({ slug: p.slug }))), (c) => 
       ${renderTags(post.tags)}
     </div>
     <article>${post.html}</article>`;
-  return c.html(renderPage(`${post.title} | ${BLOG_TITLE}`, post.slug, body));
+  return c.html(
+    renderPage(`${post.title} | ${BLOG_TITLE}`, post.slug, body, {
+      pageUrl: `${BASE_URL}/posts/${post.slug}`,
+      postImage: extractFirstImage(post.html),
+    }),
+  );
 });
 
 app.get("/tags/:tag", ssgParams(allTags.map((tag) => ({ tag }))), (c) => {
@@ -478,7 +517,11 @@ app.get("/tags/:tag", ssgParams(allTags.map((tag) => ({ tag }))), (c) => {
       <h1>#${tag}</h1>
     </div>
     <ul class="tag-post-list">${items}</ul>`;
-  return c.html(renderPage(`#${tag} | ${BLOG_TITLE}`, null, body));
+  return c.html(
+    renderPage(`#${tag} | ${BLOG_TITLE}`, null, body, {
+      pageUrl: `${BASE_URL}/tags/${tag}`,
+    }),
+  );
 });
 
 export default app;
