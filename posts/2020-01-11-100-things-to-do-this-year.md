@@ -1,6 +1,7 @@
 ---
 title: "今年やりたい100のこと"
 date: 2020-01-11 09:01:16
+tags: [life, goals, review]
 ---
 
 [![pablo-heimplatz-EAvS-4KnGrk-unsplash.jpg](https://assets.blog.kazto.dev/images/2020/0103/pablo-heimplatz-EAvS-4KnGrk-unsplash.jpg)](https://assets.blog.kazto.dev/images/2020/0103/pablo-heimplatz-EAvS-4KnGrk-unsplash.jpg "pablo-heimplatz-EAvS-4KnGrk-unsplash.jpg")

@@ -1,6 +1,7 @@
 ---
 title: "今年のアウトプットを振り返る"
 date: 2019-12-18 09:01:13
+tags: [output, review, career, advent-calendar]
 ---
 
 この記事は「[LAPRAS Fans Advent Calendar 2019](https://adventar.org/calendars/4256)」18日目になります。

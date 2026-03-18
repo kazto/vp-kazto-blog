@@ -1,6 +1,7 @@
 ---
 title: "privacypolicy"
 date: 2018-04-01 09:00:35
+tags: [blog, policy]
 ---
 
 プライバシーポリシー

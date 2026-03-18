@@ -1,6 +1,7 @@
 ---
 title: "Scrapbox雑感"
 date: 2018-07-31 22:11:22
+tags: [tech, scrapbox, review]
 ---
 
 #### [余談から入る](/diary/017#k17p0.1)

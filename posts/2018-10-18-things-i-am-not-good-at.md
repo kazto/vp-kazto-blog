@@ -1,6 +1,7 @@
 ---
 title: "苦手なもの"
 date: 2018-10-18 09:06:42
+tags: [life, career, reflection]
 ---
 
 苦手なものを克服したい。

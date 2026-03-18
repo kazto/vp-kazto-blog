@@ -1,6 +1,7 @@
 ---
 title: "AWS Lambda 用php7.4.zipをつくる"
 date: 2019-12-02 09:01:12
+tags: [aws, php, lambda, tech]
 ---
 
 PHP7.4がリリースされましたね。

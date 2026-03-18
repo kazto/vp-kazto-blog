@@ -1,6 +1,7 @@
 ---
 title: "執筆の技術を勉強する会 #engineers_lt に行ってきました"
 date: 2018-10-29 09:23:17
+tags: [event, output, study-group, lt]
 ---
 
 ようやく書けた。10月26日の話。

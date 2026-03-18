@@ -1,6 +1,7 @@
 ---
 title: "デブサミ2日目に行ってきました。 #devsumi"
 date: 2019-02-15 17:04:14
+tags: [event, career, tech, study-group]
 ---
 
 自分が聞きに行ったのは、以下のような感じです。

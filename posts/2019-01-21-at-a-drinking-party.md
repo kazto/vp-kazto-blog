@@ -1,6 +1,7 @@
 ---
 title: "飲み会にて"
 date: 2019-01-21 08:36:54
+tags: [life, career, growth]
 ---
 
 昨日は悪友のライヴでした。

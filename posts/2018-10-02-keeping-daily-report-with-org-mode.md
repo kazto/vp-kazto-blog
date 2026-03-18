@@ -1,6 +1,7 @@
 ---
 title: "org-modeで日報つけたい"
 date: 2018-10-02 08:55:56
+tags: [tech, emacs, productivity]
 ---
 
 新しい会社では、毎日Slackに朝予定と、帰りに実績を報告することになっている。

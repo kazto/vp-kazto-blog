@@ -1,6 +1,7 @@
 ---
 title: "Googleカレンダーの予定をSlackにリマインドしてみた"
 date: 2018-03-20 19:14:58
+tags: [tech, slack, google, gas]
 ---
 
 Gooble Apps Scriptが便利そうだなーと思いまして、いろいろ調べていましたところ、

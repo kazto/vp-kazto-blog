@@ -1,6 +1,7 @@
 ---
 title: "「今からやぞ」"
 date: 2018-12-03 08:36:08
+tags: [career, output, community, advent-calendar]
 ---
 
 #### [はじめに](/diary/040#k40p0.1)

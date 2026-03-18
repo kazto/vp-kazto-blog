@@ -1,6 +1,7 @@
 ---
 title: "teratailをやり始めて思うこと"
 date: 2018-04-07 09:59:42
+tags: [tech, community, teratail]
 ---
 
 最近はぼちぼちteratailに出没しておりまして、おかげさまで週間ランキング上位に現れたりしております。

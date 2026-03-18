@@ -12,27 +12,33 @@ interface Post {
   slug: string;
   title: string;
   date: string;
+  tags: string[];
   html: string;
 }
 
 function parseFrontmatter(raw: string): {
-  data: Record<string, string>;
+  data: Record<string, string | string[]>;
   content: string;
 } {
   const match = /^---\r?\n([\s\S]*?)\r?\n---\r?\n([\s\S]*)$/.exec(raw);
   if (!match) return { data: {}, content: raw };
   const yamlBlock = match[1];
   const content = match[2];
-  const data: Record<string, string> = {};
+  const data: Record<string, string | string[]> = {};
   for (const line of yamlBlock.split("\n")) {
     const colonIdx = line.indexOf(":");
     if (colonIdx === -1) continue;
     const key = line.slice(0, colonIdx).trim();
-    const value = line
-      .slice(colonIdx + 1)
-      .trim()
-      .replace(/^["']|["']$/g, "");
-    data[key] = value;
+    const rawValue = line.slice(colonIdx + 1).trim();
+    const arrayMatch = /^\[(.+)\]$/.exec(rawValue);
+    if (arrayMatch) {
+      data[key] = arrayMatch[1]
+        .split(",")
+        .map((t) => t.trim())
+        .filter(Boolean);
+    } else {
+      data[key] = rawValue.replace(/^["']|["']$/g, "");
+    }
   }
   return { data, content };
 }
@@ -41,14 +47,19 @@ const posts: Post[] = Object.entries(postFiles)
   .map(([filePath, raw]) => {
     const slug = filePath.split("/").pop()!.replace(".md", "");
     const { data, content } = parseFrontmatter(raw);
+    const rawTags = data.tags;
+    const tags = Array.isArray(rawTags) ? rawTags : [];
     return {
       slug,
-      title: data.title ?? slug,
-      date: data.date ?? "",
+      title: (data.title as string) ?? slug,
+      date: (data.date as string) ?? "",
+      tags,
       html: marked.parse(content, { async: false }),
     };
   })
   .sort((a, b) => b.date.localeCompare(a.date));
+
+const allTags = [...new Set(posts.flatMap((p) => p.tags))].sort();
 
 const CSS = `
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -306,6 +317,52 @@ const CSS = `
     font-size: 0.875rem;
     color: #64748b;
   }
+
+  .tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 10px;
+  }
+
+  .tag {
+    display: inline-block;
+    padding: 2px 10px;
+    background: #e0f2fe;
+    color: #0369a1;
+    border-radius: 9999px;
+    font-size: 0.75rem;
+    text-decoration: none;
+    transition: background 0.15s;
+  }
+
+  .tag:hover { background: #bae6fd; }
+
+  .tag-post-list {
+    list-style: none;
+    margin-top: 24px;
+  }
+
+  .tag-post-list li {
+    padding: 14px 0;
+    border-bottom: 1px solid #e2e8f0;
+  }
+
+  .tag-post-list li a {
+    color: #0f172a;
+    text-decoration: none;
+    font-size: 1rem;
+    font-weight: 500;
+  }
+
+  .tag-post-list li a:hover { color: #0ea5e9; }
+
+  .tag-post-list li time {
+    display: block;
+    font-size: 0.8125rem;
+    color: #64748b;
+    margin-top: 2px;
+  }
 `;
 
 function renderPage(title: string, currentSlug: string | null, bodyContent: string): string {
@@ -374,6 +431,12 @@ const BLOG_TITLE = "kazto_dev blog";
 
 const app = new Hono();
 
+function renderTags(tags: string[]): string {
+  if (tags.length === 0) return "";
+  const links = tags.map((t) => `<a href="/tags/${t}" class="tag">${t}</a>`).join("");
+  return `<div class="tags">${links}</div>`;
+}
+
 app.get("/", (c) => {
   const latest = posts[0];
   if (!latest) return c.html(renderPage(BLOG_TITLE, null, "<p>記事がありません。</p>"));
@@ -381,6 +444,7 @@ app.get("/", (c) => {
     <div class="post-header">
       <h1>${latest.title}</h1>
       <time datetime="${latest.date}">${latest.date}</time>
+      ${renderTags(latest.tags)}
     </div>
     <article>${latest.html}</article>`;
   return c.html(renderPage(`${latest.title} | ${BLOG_TITLE}`, latest.slug, body));
@@ -394,9 +458,27 @@ app.get("/posts/:slug", ssgParams(posts.map((p) => ({ slug: p.slug }))), (c) => 
     <div class="post-header">
       <h1>${post.title}</h1>
       <time datetime="${post.date}">${post.date}</time>
+      ${renderTags(post.tags)}
     </div>
     <article>${post.html}</article>`;
   return c.html(renderPage(`${post.title} | ${BLOG_TITLE}`, post.slug, body));
+});
+
+app.get("/tags/:tag", ssgParams(allTags.map((tag) => ({ tag }))), (c) => {
+  const tag = c.req.param("tag");
+  const tagPosts = posts.filter((p) => p.tags.includes(tag));
+  const items = tagPosts
+    .map(
+      (p) =>
+        `<li><a href="/posts/${p.slug}">${p.title}</a><time>${p.date.slice(0, 10)}</time></li>`,
+    )
+    .join("");
+  const body = `
+    <div class="post-header">
+      <h1>#${tag}</h1>
+    </div>
+    <ul class="tag-post-list">${items}</ul>`;
+  return c.html(renderPage(`#${tag} | ${BLOG_TITLE}`, null, body));
 });
 
 export default app;

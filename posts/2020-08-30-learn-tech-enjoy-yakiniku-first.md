@@ -1,6 +1,7 @@
 ---
 title: "技術を教わって、焼肉をごちそうする会、第一回。"
 date: 2020-08-30 09:01:19
+tags: [tech, kubernetes, community]
 ---
 
 [![](https://assets.blog.kazto.dev/images/2021/01/joseph-barrientos-eUMEWE-7Ewg-unsplash-300x200.jpg)](https://assets.blog.kazto.dev/images/2020/0829/joseph-barrientos-eUMEWE-7Ewg-unsplash.jpg "joseph-barrientos-eUMEWE-7Ewg-unsplash.jpg")

@@ -1,6 +1,7 @@
 ---
 title: "Everyone Outputer Advent Calendar 18日目"
 date: 2018-12-18 08:59:28
+tags: [output, advent-calendar, metal, community]
 ---
 
 この記事は Everyone Outputer Advent Calendar 18日目の記事です。（[https://adventar.org/calendars/3225](https://adventar.org/calendars/3225)）

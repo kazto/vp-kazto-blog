@@ -1,6 +1,7 @@
 ---
 title: "laravel-permissionでguardつきroleをアサインする"
 date: 2019-02-11 15:16:21
+tags: [tech, php, laravel]
 ---
 
 たまには（すんげぇピンポイントな）技術ネタを。

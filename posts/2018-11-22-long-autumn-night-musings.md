@@ -1,6 +1,7 @@
 ---
 title: "秋の夜長の"
 date: 2018-11-22 23:07:40
+tags: [event, lt, study-group, output]
 ---
 
 最近よく出入りさせていただいてる「エンジニアの登壇を応援する会」（ほんと略称）の、自由研究LT大会 [https://engineers.connpass.com/event/104940/](https://engineers.connpass.com/event/104940/) に一般参加してきました。

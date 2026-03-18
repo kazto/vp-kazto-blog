@@ -1,6 +1,7 @@
 ---
 title: "入社して一週間を振り返りました"
 date: 2019-07-06 12:50:23
+tags: [career, job-change, reflection]
 ---
 
 [![start-digital-DChgWclU_xU-unsplash.jpg](https://assets.blog.kazto.dev/images/2019/0706/start-digital-DChgWclU_xU-unsplash.jpg)](https://assets.blog.kazto.dev/images/2019/0706/start-digital-DChgWclU_xU-unsplash.jpg "start-digital-DChgWclU_xU-unsplash.jpg")

@@ -1,6 +1,7 @@
 ---
 title: "#たまもく 2019/11/23 成果"
 date: 2019-11-23 09:01:09
+tags: [study-group, aws, php, tech]
 ---
 
 [たまもく](https://tamamoku.connpass.com/)も少し間をあけましたが、再開してトータル第6回を数えています。

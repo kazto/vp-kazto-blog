@@ -1,6 +1,7 @@
 ---
 title: "忘年LT大会"
 date: 2018-12-28 17:07:37
+tags: [event, lt, output, community]
 ---
 
 昨日は「エンジニアの登壇を応援する会」の忘年LT大会でした。

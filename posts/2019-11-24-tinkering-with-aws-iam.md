@@ -1,6 +1,7 @@
 ---
 title: "AWS IAMこねくりまわし"
 date: 2019-11-24 09:01:11
+tags: [aws, iam, tech]
 ---
 
 [昨日の投稿](https://www.kazto.net/diary/069)のつづき。

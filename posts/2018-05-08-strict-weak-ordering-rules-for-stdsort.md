@@ -1,6 +1,7 @@
 ---
 title: "std::sortに渡す比較関数の「Strict Weak Ordering」ルールについて"
 date: 2018-05-08 23:11:22
+tags: [tech, cpp, algorithm]
 ---
 
 ここのところの仕事の中で、vectorを一定の（しかし単なる大小比較ほどシンプルじゃないルールで）ソートする必要があり、コーディングしていました。

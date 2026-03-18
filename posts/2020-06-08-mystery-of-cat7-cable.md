@@ -1,6 +1,7 @@
 ---
 title: "カテゴリ7ケーブルの謎"
 date: 2020-06-08 09:01:18
+tags: [tech, network, hardware]
 ---
 
 ![](https://assets.blog.kazto.dev/images/2021/01/markus-spiske-uBcgQA7fwEA-unsplash-300x200.jpg)

@@ -1,6 +1,7 @@
 ---
 title: "もくもく会を主催してみて"
 date: 2019-12-19 09:01:14
+tags: [study-group, community, advent-calendar]
 ---
 
 本記事は、「[エンジニアの登壇を応援する会 Advent Calendar 2019](https://adventar.org/calendars/3934)」19日目の記事になります。

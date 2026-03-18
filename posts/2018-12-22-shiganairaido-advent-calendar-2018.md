@@ -1,6 +1,7 @@
 ---
 title: "#しがないラジオ 2 Advent Calendar 2018"
 date: 2018-12-22 17:41:38
+tags: [career, job-change, advent-calendar, php]
 ---
 
 本エントリは、#しがないラジオ 2 Advent Calendar 2018 22日目の記事です。

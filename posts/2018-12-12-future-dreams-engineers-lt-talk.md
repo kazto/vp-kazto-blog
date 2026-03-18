@@ -1,6 +1,7 @@
 ---
 title: "将来の夢。1年5組 かずと #engineers_lt"
 date: 2018-12-12 08:44:03
+tags: [career, output, lt, advent-calendar]
 ---
 
 この記事は『真・エンジニアの登壇を応援する会』 Advent Calendar 12日目の記事です。（[https://adventar.org/calendars/3064](https://adventar.org/calendars/3064)）

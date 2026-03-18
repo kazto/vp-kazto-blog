@@ -1,6 +1,7 @@
 ---
 title: "退職エントリ【七ヶ月ぶり二回目】あるいは、或る転職失敗事例"
 date: 2019-05-08 13:08:42
+tags: [career, job-change, health, life]
 ---
 
 [![paul-trienekens-419330-unsplash.jpg](https://assets.blog.kazto.dev/images/2019/0425/paul-trienekens-419330-unsplash.jpg)](https://assets.blog.kazto.dev/images/2019/0425/paul-trienekens-419330-unsplash.jpg "paul-trienekens-419330-unsplash.jpg")

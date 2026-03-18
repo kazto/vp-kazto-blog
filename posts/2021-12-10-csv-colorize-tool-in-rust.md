@@ -1,6 +1,7 @@
 ---
 title: "Rust言語で遊んでみた"
 date: 2021-12-10 10:50:42
+tags: [rust, tech, cli]
 ---
 
 こんにちは。kaztoです。ご無沙汰しています。

@@ -1,6 +1,7 @@
 ---
 title: "リニューアル"
 date: 2021-01-11 19:44:06
+tags: [blog, nextjs, firebase]
 ---
 
 [kazto.dev](https://kazto.dev/) を新しくした。

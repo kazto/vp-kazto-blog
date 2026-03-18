@@ -1,6 +1,7 @@
 ---
 title: "manabiya.techに来ています"
 date: 2018-03-24 15:26:10
+tags: [event, career, study-group]
 ---
 
 久しぶりに勉強会的なものに来ています。
