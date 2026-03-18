@@ -23,6 +23,7 @@ cat > "$FILENAME" <<EOF
 title: "${TITLE}"
 date: ${DATETIME}
 tags: []
+description: ""
 ---
 
 EOF

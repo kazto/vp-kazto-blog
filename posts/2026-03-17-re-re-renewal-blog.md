@@ -2,6 +2,7 @@
 title: "ブログ再々始動"
 date: 2026-03-17 23:11
 tags: [cloudflare, hono, blog]
+description: "Cloudflare Workers + Hono + SSGでブログを自作した記録。Markdownをプッシュするだけでビルド・デプロイが完結する。"
 ---
 
 積年の課題であったブログ自作を果たした。

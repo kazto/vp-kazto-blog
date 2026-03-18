@@ -13,6 +13,7 @@ interface Post {
   title: string;
   date: string;
   tags: string[];
+  description: string;
   html: string;
 }
 
@@ -54,6 +55,7 @@ const posts: Post[] = Object.entries(postFiles)
       title: (data.title as string) ?? slug,
       date: (data.date as string) ?? "",
       tags,
+      description: (data.description as string) ?? "",
       html: marked.parse(content, { async: false }),
     };
   })
@@ -378,9 +380,10 @@ function renderPage(
   title: string,
   currentSlug: string | null,
   bodyContent: string,
-  meta?: { pageUrl?: string; postImage?: string },
+  meta?: { pageUrl?: string; postImage?: string; description?: string },
 ): string {
   const pageUrl = meta?.pageUrl ?? BASE_URL;
+  const description = meta?.description ?? "";
   const ogImage = meta?.postImage ?? `${BASE_URL}/ogp.png`;
   const twitterImage = meta?.postImage ?? `${BASE_URL}/ogp2.png`;
   const twitterCard = meta?.postImage ? "summary_large_image" : "summary";
@@ -420,16 +423,19 @@ function renderPage(
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>${title}</title>
+  ${description ? `<meta name="description" content="${description}">` : ""}
   <meta property="og:title" content="${title}">
   <meta property="og:type" content="article">
   <meta property="og:url" content="${pageUrl}">
   <meta property="og:image" content="${ogImage}">
+  ${description ? `<meta property="og:description" content="${description}">` : ""}
   <meta property="og:site_name" content="${BLOG_TITLE}">
   <meta property="og:locale" content="ja_JP">
   <meta name="twitter:card" content="${twitterCard}">
   <meta name="twitter:site" content="@kazto_dev">
   <meta name="twitter:title" content="${title}">
   <meta name="twitter:image" content="${twitterImage}">
+  ${description ? `<meta name="twitter:description" content="${description}">` : ""}
   <style>${CSS}</style>
 </head>
 <body>
@@ -480,6 +486,7 @@ app.get("/", (c) => {
     renderPage(`${latest.title} | ${BLOG_TITLE}`, latest.slug, body, {
       pageUrl: BASE_URL,
       postImage: extractFirstImage(latest.html),
+      description: latest.description,
     }),
   );
 });
@@ -499,6 +506,7 @@ app.get("/posts/:slug", ssgParams(posts.map((p) => ({ slug: p.slug }))), (c) => 
     renderPage(`${post.title} | ${BLOG_TITLE}`, post.slug, body, {
       pageUrl: `${BASE_URL}/posts/${post.slug}`,
       postImage: extractFirstImage(post.html),
+      description: post.description,
     }),
   );
 });
