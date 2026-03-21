@@ -57,7 +57,8 @@ fi
 echo "Uploading: ${FILENAME} → ${KEY}"
 $WRANGLER_EXE r2 object put "${BUCKET}/${KEY}" \
   --file "${FILE}" \
-  --content-type "${CONTENT_TYPE}"
+  --content-type "${CONTENT_TYPE}" \
+  --remote
 
 URL="${BASE_URL}/${KEY}"
 echo ""
