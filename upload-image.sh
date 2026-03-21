@@ -37,16 +37,16 @@ YYYY=$(date +"%Y")
 MMDD=$(date +"%m%d")
 KEY="images/${YYYY}/${MMDD}/${FILENAME}"
 WRANGLER_EXE=
-if which vpx 2>&1 /dev/null
+if which vpx >/dev/null 2>&1
 then
     WRANGLER_EXE="vpx wrangler"
-elif which pnpm 2>&1 /dev/null
+elif which pnpm >/dev/null 2>&1
 then
     WRANGLER_EXE="pnpm dlx wrangler"
-elif which npx 2>&1 /dev/null
+elif which npx >/dev/null 2>&1
 then
     WRANGLER_EXE="npx wrangler"
-elif which wrangler 2>&1 /dev/null
+elif which wrangler >/dev/null 2>&1
 then
     WRANGLER_EXE="wrangler"
 else
