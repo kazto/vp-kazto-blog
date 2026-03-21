@@ -52,14 +52,19 @@ jobs:
         run: |
           FILENAME="${{ steps.save.outputs.filename }}"
 
-          # private-user-images URLを抽出（JWTトークン付きの一時URLからUUIDを取り出す）
-          grep -oP 'https://private-user-images\.githubusercontent\.com/[^\)]+' "$FILENAME" | while IFS= read -r URL; do
+          # GitHub画像URLを2パターンで抽出（マッチなしでも終了しないよう || true）
+          # 1) private-user-images（JWT付き一時URL）
+          # 2) user-attachments/assets（安定URL、webhookペイロードはこちらの場合が多い）
+          {
+            grep -oP 'https://private-user-images\.githubusercontent\.com/[^\)]+' "$FILENAME" || true
+            grep -oP 'https://github\.com/user-attachments/assets/[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}' "$FILENAME" || true
+          } | sort -u | while IFS= read -r URL; do
             UUID=$(echo "$URL" | grep -oP '[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}')
             EXT=$(echo "$URL" | grep -oP '\.[a-z]+(?=\?)' | head -1 | tr -d '.')
             [ -z "$UUID" ] && { echo "No UUID found in: $URL"; continue; }
             [ -z "$EXT" ] && EXT="jpg"
 
-            # JWTは期限切れの可能性があるため、安定したURLでダウンロード
+            # 安定URLでダウンロード（JWTは期限切れの可能性があるため）
             STABLE_URL="https://github.com/user-attachments/assets/${UUID}"
             TMPFILE="/tmp/${UUID}.${EXT}"
 
