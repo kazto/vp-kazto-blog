@@ -79,15 +79,8 @@ jobs:
             R2_URL=$(echo "$R2_OUTPUT" | grep '^URL: ' | sed 's/^URL: //')
 
             if [ -n "$R2_URL" ]; then
-              # URLを置換（特殊文字対策のためPythonを使用）
-              OLD_URL="$URL" NEW_URL="$R2_URL" python3 -c "
-import os, sys
-fname = sys.argv[1]
-content = open(fname).read()
-content = content.replace(os.environ['OLD_URL'], os.environ['NEW_URL'])
-open(fname, 'w').write(content)
-" "$FILENAME"
-              echo "Replaced: $URL -> $R2_URL"
+              # URLを置換（特殊文字対策のためPythonスクリプトを使用）
+              OLD_URL="$URL" NEW_URL="$R2_URL" python3 .github/scripts/replace-image-urls.py "$FILENAME"
             else
               echo "Upload failed for $TMPFILE"
             fi
