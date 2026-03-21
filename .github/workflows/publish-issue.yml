@@ -30,12 +30,8 @@ jobs:
           # 日付をYYYY-MM-DD形式で取得
           DATE=$(echo "$ISSUE_CREATED_AT" | cut -c1-10)
 
-          # タイトルをスラッグ化（小文字、英数字とハイフンのみ）
-          SLUG=$(echo "$ISSUE_TITLE" \
-            | tr '[:upper:]' '[:lower:]' \
-            | sed 's/[^a-z0-9あ-んア-ンー一-龯]/-/g' \
-            | sed 's/-\+/-/g' \
-            | sed 's/^-//;s/-$//')
+          # タイトルをスラッグ化
+          SLUG=$(python3 .github/scripts/slugify.py "$ISSUE_TITLE")
 
           FILENAME="posts/${DATE}-${SLUG}.md"
           echo "filename=${FILENAME}" >> "$GITHUB_OUTPUT"
