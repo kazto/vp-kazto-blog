@@ -53,7 +53,7 @@ echo "$URLS" | while IFS= read -r URL; do
   fi
 
   # upload-image.sh でCloudflare R2にアップロード
-  R2_OUTPUT=$(bash "$(git rev-parse --show-toplevel)/upload-image.sh" "$TMPFILE" 2>&1) || true
+  R2_OUTPUT=$(bash "$(git rev-parse --show-toplevel)/scripts/upload-image.sh" "$TMPFILE" 2>&1) || true
   echo "$R2_OUTPUT"
   R2_URL=$(echo "$R2_OUTPUT" | grep '^URL: ' | sed 's/^URL: //')
 

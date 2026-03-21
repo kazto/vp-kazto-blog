@@ -31,7 +31,7 @@ jobs:
           DATE=$(echo "$ISSUE_CREATED_AT" | cut -c1-10)
 
           # タイトルをスラッグ化
-          SLUG=$(python3 .github/scripts/slugify.py "$ISSUE_TITLE")
+          SLUG=$(python3 scripts/slugify.py "$ISSUE_TITLE")
 
           FILENAME="posts/${DATE}-${SLUG}.md"
           echo "filename=${FILENAME}" >> "$GITHUB_OUTPUT"
@@ -45,7 +45,7 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-        run: bash .github/scripts/download-and-rehost-images.sh "${{ steps.save.outputs.filename }}"
+        run: bash scripts/download-and-rehost-images.sh "${{ steps.save.outputs.filename }}"
 
       - name: Commit and push
         run: |
