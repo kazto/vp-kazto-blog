@@ -1,6 +1,6 @@
 import { Hono } from "hono";
 import { ssgParams } from "hono/ssg";
-import { BLOG_TITLE } from "./constants";
+import { BLOG_TITLE, BASE_URL } from "./constants";
 import { buildAtomFeed, buildRssFeed } from "./feed";
 import { posts, allTags } from "./posts";
 import { extractFirstImage, renderPage, renderTags } from "./render";
@@ -19,7 +19,7 @@ app.get("/", (c) => {
     <article>${latest.html}</article>`;
   return c.html(
     renderPage(`${latest.title} | ${BLOG_TITLE}`, latest.slug, body, {
-      pageUrl: "https://blog.kazto.dev",
+      pageUrl: BASE_URL,
       postImage: extractFirstImage(latest.html),
       description: latest.description,
     }),
