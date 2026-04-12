@@ -125,7 +125,7 @@ PdM目線の話すごい参考になるとか。
 
 すてきなお料理たち。
 
-![舟盛り食いそびれた](https://assets.blog.kazto.dev/images/2026/0412/ad4c343d-88f1-43bd-a420-c30d9381a4fe.jpg)
+![舟盛り食いそびれた](https://assets.blog.kazto.dev/images/2026/0412/576963782-ad4c343d-88f1-43bd-a420-c30d9381a4fe.jpg)
 
 今回、DebianメンテナでRe:VIEW作者の武藤健志さんにご挨拶できたのが嬉しかったです。
 
